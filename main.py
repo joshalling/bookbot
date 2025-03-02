@@ -1,26 +1,27 @@
 import sys
+from stats import get_num_words
 
 paths = sys.argv[1:]
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
 
-def print_report(path, words, character_count):
+def print_report(path, word_count, character_count):
     sorted_character_count = sorted(
         character_count.items(), key=lambda item: item[1], reverse=True
     )
 
     print(f"--- Report for {path} ---")
-    print(f"Number of words: {len(words)}")
+    print(f"{word_count} words found in the document")
     print("")
     for letter, count in sorted_character_count:
-        print(f"The character '{letter}' was found {count} times")
+        print(f"{letter}: {count}")
 
 
 for path in paths:
     with open(path) as f:
         file_contents = f.read()
 
-    words = file_contents.split()
+    word_count = get_num_words(file_contents)
     character_count = {}
     for letter in file_contents:
         letter = letter.lower()
@@ -30,4 +31,4 @@ for path in paths:
             else:
                 character_count[letter] = 1
 
-    print_report(path, words, character_count)
+    print_report(path, word_count, character_count)
